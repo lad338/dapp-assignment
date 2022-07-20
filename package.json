@@ -1,11 +1,14 @@
 {
   "type": "module",
+  "license": "MIT",
   "dependencies": {
     "axios": "^0.27.2",
     "web3": "^1.7.4"
   },
   "scripts": {
-    "dev": "node --experimental-json-modules index.js"
+    "assignment1:1": "node --experimental-json-modules assignment1-question1.js",
+    "assignment1:2": "node --experimental-json-modules assignment1-question2.js",
+    "assignment1": "yarn assignment1:1 && yarn assignment1:2"
   },
   "devDependencies": {
     "prettier": "^2.7.1"
