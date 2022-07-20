@@ -1,0 +1,5 @@
+{
+    "hongkong": "https://goweather.herokuapp.com/weather/hongkong",
+    "shanghai": "https://goweather.herokuapp.com/weather/shanghai",
+    "london": "https://goweather.herokuapp.com/weather/london"
+}
