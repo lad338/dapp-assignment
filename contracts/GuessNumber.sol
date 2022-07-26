@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.15;
+pragma solidity ^0.8.9;
 
 contract GuessNumber {
     event GameHosted(uint deposit, bytes32 nonceHash, bytes32 nonceNumHash);
@@ -37,7 +37,8 @@ contract GuessNumber {
         bytes32 _nonceNumHash,
         uint16 _playersLimit
     ) payable {
-        require(msg.value > 0);
+        require(msg.value > 0, "Host must put deposit");
+        require(_playersLimit >= 2, "Player limit must be >= 2"); // 1 player should technically work but it wouldn't consider as "game", right?
         deposit = msg.value;
 
         host = msg.sender;
@@ -80,7 +81,7 @@ contract GuessNumber {
             keccak256(abi.encode(nonce, number)) == nonceNumHash,
             "Nonce and number pair incorrect for nonceNumHash"
         );
-        require(playerAddresses.length >= 2, "At least 2 players before reveal"); // 1 player should technically work but it wouldn't consider as "game", right?
+        require(playerAddresses.length >= 2, "At least 2 players before reveal"); 
         _;
     }
 
