@@ -1,6 +1,6 @@
 // import Web3 from 'web3'
 
-// import { compileContract, deployContract } from './lib/web3-util.js'
+// import { compileContract, deployContract } from './lib/web3-util.mjs'
 
 // import Provider from './config/web3-provider.json' assert { type: 'json' }
 // import TestingAccount from './config/testing-account.json' assert { type: 'json' }

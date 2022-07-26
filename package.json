@@ -1,5 +1,4 @@
 {
-  "type": "module",
   "license": "MIT",
   "dependencies": {
     "axios": "^0.27.2",
@@ -8,12 +7,27 @@
     "web3": "^1.7.4"
   },
   "scripts": {
-    "assignment1:1": "node --experimental-json-modules assignment1-question1.js",
-    "assignment1:2": "node --experimental-json-modules assignment1-question2.js",
+    "assignment1:1": "node --experimental-json-modules assignment1-question1.mjs",
+    "assignment1:2": "node --experimental-json-modules assignment1-question2.mjs",
     "assignment1": "yarn assignment1:1 && yarn assignment1:2",
-    "deployMulticall": "node --experimental-json-modules deploy-multicall2.js"
+    "deployMulticall": "node --experimental-json-modules deploy-multicall2.mjs"
   },
   "devDependencies": {
-    "prettier": "^2.7.1"
+    "@ethersproject/abi": "^5.6.4",
+    "@ethersproject/providers": "^5.6.8",
+    "@nomicfoundation/hardhat-chai-matchers": "^1.0.2",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.3",
+    "@nomicfoundation/hardhat-toolbox": "^1.0.2",
+    "@nomiclabs/hardhat-ethers": "^2.1.0",
+    "@nomiclabs/hardhat-etherscan": "^3.1.0",
+    "@typechain/ethers-v5": "^10.1.0",
+    "@typechain/hardhat": "^6.1.2",
+    "chai": "^4.3.6",
+    "ethers": "^5.6.9",
+    "hardhat": "^2.10.1",
+    "hardhat-gas-reporter": "^1.0.8",
+    "prettier": "^2.7.1",
+    "solidity-coverage": "^0.7.21",
+    "typechain": "^8.1.0"
   }
 }
