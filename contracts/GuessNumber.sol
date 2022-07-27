@@ -8,11 +8,11 @@ contract GuessNumber {
     event GameConcluded(bytes32 nonce, uint16 number);
     event AmountTransfered(uint256 amount, address receiver);
 
-    //256
+    //32
     uint256 public deposit;
     bytes32 public nonceHash;
     bytes32 public nonceNumHash;
-    // 16 + 20 + 2
+    // 2 + 20 + 2 value enum
     uint16 public playersLimit; // [0,1000) -> max 1000 players
     address public host;
     Stage public stage = Stage.ACCEPTING_GUESS;
