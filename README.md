@@ -12,6 +12,12 @@ setup:
 
 ---
 
+## Assignment 2
+
+- contract: `./contracts/GuessNumber.sol`
+- test: `./test/GuessNumber.test.js`
+- Running test: `yarn run assignment2:test`
+
 ## Assignment 1
 
 -   Running all assignment code: `yarn run assignment1`
