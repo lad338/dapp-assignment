@@ -1,6 +1,7 @@
 {
   "license": "MIT",
   "dependencies": {
+    "@openzeppelin/contracts": "^4.7.2",
     "axios": "^0.27.2",
     "ethereum-multicall": "^2.14.0",
     "solc": "^0.8.15",
@@ -11,7 +12,7 @@
     "assignment1:2": "node --experimental-json-modules assignment1-question2.mjs",
     "assignment1": "yarn assignment1:1 && yarn assignment1:2",
     "deployMulticall": "node --experimental-json-modules deploy-multicall2.mjs",
-    "assignment2:test": "npx hardhat test"
+    "assignment2:test": "npx hardhat test ./test/GuessNumber.test.js"
   },
   "devDependencies": {
     "@ethersproject/abi": "^5.6.4",

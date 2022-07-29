@@ -1,14 +1,23 @@
 # dapp-assignment
 
-using:
+Using:
 
-`node`, `yarn`
+- `node`
+- `yarn`
+- `truffle`
 
 ---
 
-setup:
+Setup:
 
-`yarn install`
+- `yarn install`
+- `truffle compile`
+
+---
+Install truffle
+
+- `npm install -g truffle`
+
 
 ---
 

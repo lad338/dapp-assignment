@@ -13,9 +13,9 @@
 // const filePath = './contracts/Multicall2.sol'
 
 // const compiledContract = compileContract(fileName, filePath)
+// const abi = compiledContract.contracts[fileName].Multicall2.abi
 // console.log('Compiled ABI: ')
 // console.log(JSON.stringify(abi))
-// const abi = compiledContract.contracts[fileName].Multicall2.abi
 // const bytecode =
 //     compiledContract.contracts[fileName].Multicall2.evm.bytecode.object
 
