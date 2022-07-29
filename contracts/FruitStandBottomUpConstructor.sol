@@ -25,10 +25,19 @@ contract FruitStand {
     ERC20 water;
     ERC20 melon;
     mapping (address => UserStake) userStakes;
+    uint[] fibNums;
 
+    //calculate the 300 used fib numbers on construction using bottom up method
     constructor(address _water, address _melon) {
         water = ERC20(_water);
         melon = ERC20(_melon);
+
+        fibNums.push(0); //fibNums[0]
+        fibNums.push(1); //fibNums[1]
+        fibNums.push(1); //fibNums[2]
+        for (uint i = 3; i <= 300; i++) { //fibNums[3] and onwards
+            fibNums.push(fibNums[i-1] + fibNums[i-2]);
+        }
     }
 
     function stake(uint _amount) external {
@@ -49,27 +58,20 @@ contract FruitStand {
         userStakes[msg.sender] = UserStake({ startBlock: 0, stakeAmount: 0 }); 
     }
 
-    function payout(address user, UserStake memory stake) internal returns (uint8 errCode) {
-        uint blockDelta = block.number - stake.startBlock;
+    //Changed stake to _stake to fix warning "This declaration has the same name as another declaration"
+    function payout(address user, UserStake memory _stake) internal returns (uint8 errCode) {
+        uint blockDelta = block.number - _stake.startBlock;
         if (blockDelta > 300) {
             blockDelta = 300;
         }
         uint multiplier = fib(blockDelta); 
-        uint rewardAmount = multiplier * stake.stakeAmount;
+        uint rewardAmount = multiplier * _stake.stakeAmount;
         melon.transfer(user, rewardAmount);
         return 0;
     }
 
-    function fib(uint n) public view returns (uint fn) {
-        if (n == 0) {
-            return 0;
-        }
-        else if (n == 1) {
-            return 1;
-        }
-        else if (n > 1) {
-            return fib(n-2) + fib(n-1);
-        }
+    function fib(uint n) public view returns (uint a) {
+        return fibNums[n];
     }
 
 }
