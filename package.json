@@ -5,6 +5,7 @@
     "axios": "^0.27.2",
     "ethereum-multicall": "^2.14.0",
     "solc": "^0.8.15",
+    "uuid": "^8.3.2",
     "web3": "^1.7.4"
   },
   "scripts": {
@@ -13,7 +14,9 @@
     "assignment1": "yarn assignment1:1 && yarn assignment1:2",
     "deployMulticall": "node --experimental-json-modules deploy-multicall2.mjs",
     "assignment2:test": "npx hardhat test ./test/GuessNumber.test.js",
-    "assignment3:2:test": "npx hardhat test ./test/ChequeBank.test.js"
+    "assignment3:2:test": "npx hardhat test ./test/ChequeBank.test.ts",
+    "assignment3:2:testcopy": "npx hardhat test ./test/ChequeBankCopy.test.ts",
+    "prettier:ts": "prettier --config .prettierrc '**/*.ts' --write"
   },
   "devDependencies": {
     "@ethersproject/abi": "^5.6.4",
@@ -28,6 +31,7 @@
     "@types/chai": "^4.3.1",
     "@types/mocha": "^9.1.1",
     "@types/node": "^18.6.3",
+    "@types/uuid": "^8.3.4",
     "chai": "^4.3.6",
     "ethers": "^5.6.9",
     "hardhat": "^2.10.1",

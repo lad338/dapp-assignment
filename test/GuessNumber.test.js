@@ -221,7 +221,7 @@ describe('Guess Number contract', () => {
       ).to.be.revertedWith('Host should not guess')
     })
 
-    it('should revert if player is not paying deposite', async () => {
+    it('should revert if player is not paying deposit', async () => {
       const { hardhatGuessNumber, player1 } = await loadFixture(
         guessNumberFixture
       )
