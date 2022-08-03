@@ -54,7 +54,10 @@ contract ChequeBank is IChequeBank {
     );
   }
 
-  function revoke(bytes32 chequeId) external requireNotSignedOver(chequeId) {
+  function revoke(bytes32 chequeId)
+    external
+    requireNotSignedOverOrSignedOverPayee(chequeId)
+  {
     cheques[chequeId].stage = ChequeStage.REVOKED;
 
     emit chequeRevoked(chequeId);
@@ -90,7 +93,11 @@ contract ChequeBank is IChequeBank {
       .signOverInfo
       .counter;
 
-    cheques[signOverData.signOverInfo.chequeId].payee = signOverData
+    cheques[signOverData.signOverInfo.chequeId].oldPayee = signOverData
+      .signOverInfo
+      .oldPayee;
+
+    cheques[signOverData.signOverInfo.chequeId].newPayee = signOverData
       .signOverInfo
       .newPayee;
 
@@ -128,44 +135,55 @@ contract ChequeBank is IChequeBank {
     SignOver[] memory signOverData
   ) public view returns (bool) {
     if (recoverSigner(chequeData) != chequeData.chequeInfo.payer) {
-        return false;
+      return false;
     }
-    if (chequeData.chequeInfo.validFrom > 0 && block.number < chequeData.chequeInfo.validFrom) {
-        return false;
+    if (
+      chequeData.chequeInfo.validFrom > 0 &&
+      block.number < chequeData.chequeInfo.validFrom
+    ) {
+      return false;
     }
-    if (chequeData.chequeInfo.validThru > 0 && block.number > chequeData.chequeInfo.validThru) {
-        return false;
+    if (
+      chequeData.chequeInfo.validThru > 0 &&
+      block.number > chequeData.chequeInfo.validThru
+    ) {
+      return false;
     }
     if (cheques[chequeData.chequeInfo.chequeId].stage != ChequeStage.CREATED) {
-        return false;
+      return false;
     }
     if (signOverData.length == 0) {
-        if (payee != chequeData.chequeInfo.payee) {
-            return false;
-        }
-        if (cheques[chequeData.chequeInfo.chequeId].signOverCounter != 0) {
-            return false;
-        }
+      if (payee != chequeData.chequeInfo.payee) {
+        return false;
+      }
+      if (cheques[chequeData.chequeInfo.chequeId].signOverCounter != 0) {
+        return false;
+      }
     } else {
-        if (signOverData.length > 6) {
-            return false;
+      if (signOverData.length > 6) {
+        return false;
+      }
+      if (
+        signOverData[signOverData.length - 1].signOverInfo.newPayee != payee
+      ) {
+        return false;
+      }
+      address previousPayee = chequeData.chequeInfo.payee;
+      for (uint256 i = 0; i < signOverData.length; i++) {
+        if (signOverData[i].signOverInfo.counter != i + 1) {
+          return false;
         }
-        if (signOverData[signOverData.length - 1].signOverInfo.newPayee != payee) {
-            return false;
+        if (signOverData[i].signOverInfo.oldPayee != previousPayee) {
+          return false;
         }
-        address previousPayee = chequeData.chequeInfo.payee;
-        for (uint256 i = 0; i < signOverData.length; i++) {
-            if (signOverData[i].signOverInfo.counter != i + 1) {
-                return false;
-            }
-            if (signOverData[i].signOverInfo.oldPayee != previousPayee) {
-                return false;
-            }
-            if (recoverSigner(signOverData[i]) != signOverData[i].signOverInfo.oldPayee) {
-                return false;
-            }
-            previousPayee = signOverData[i].signOverInfo.newPayee;
+        if (
+          recoverSigner(signOverData[i]) !=
+          signOverData[i].signOverInfo.oldPayee
+        ) {
+          return false;
         }
+        previousPayee = signOverData[i].signOverInfo.newPayee;
+      }
     }
     return true;
   }
@@ -242,6 +260,22 @@ contract ChequeBank is IChequeBank {
       cheques[chequeId].stage == ChequeStage.CREATED,
       'Invalid cheque, not redeemable'
     );
+
+    _;
+  }
+
+  modifier requireNotSignedOverOrSignedOverPayee(bytes32 chequeId) {
+    if (cheques[chequeId].signOverCounter > 0) {
+      require(
+        cheques[chequeId].oldPayee == msg.sender,
+        'Signed over cheque requires original payee to revoke'
+      );
+    } else {
+      require(
+        cheques[chequeId].signOverCounter == 0,
+        'Cheque should not be signed over'
+      );
+    }
 
     _;
   }

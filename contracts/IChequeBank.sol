@@ -37,8 +37,9 @@ interface IChequeBank {
 
   struct ChequeStatus {
     ChequeStage stage;
-    address payee;
     uint8 signOverCounter;
+    address oldPayee;
+    address newPayee;
   }
 
   function deposit() external payable;

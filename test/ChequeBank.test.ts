@@ -457,6 +457,31 @@ describe('Cheque Bank contract', () => {
         .withArgs(chequeId)
     })
 
+    it('should revoke signed over cheque by old payee', async () => {
+      const { deployedChequeBank, payer, payee1, payee2 } = await loadFixture(
+        chequeBankFixture
+      )
+      const chequeId = getChequeId('1')
+
+      const signOverInfo = {
+        counter: 1,
+        chequeId,
+        oldPayee: payee1.address,
+        newPayee: payee2.address,
+      }
+
+      const signOverData = {
+        signOverInfo,
+        sig: await getSignOverSignature(signOverInfo, payee1),
+      }
+
+      await deployedChequeBank.connect(payee2).notifySignOver(signOverData)
+
+      await expect(deployedChequeBank.connect(payee1).revoke(chequeId))
+        .to.emit(deployedChequeBank, 'chequeRevoked')
+        .withArgs(chequeId)
+    })
+
     it('should not be able to redeem revoked cheque', async () => {
       const { deployedChequeBank, payer, payee1 } = await loadFixture(
         chequeBankFixture
@@ -498,7 +523,7 @@ describe('Cheque Bank contract', () => {
       ).to.revertedWith('Invalid cheque, not redeemable')
     })
 
-    it('should not be able to revoke signed over cheque', async () => {
+    it('should not be able to revoke signed over cheque by original payer', async () => {
       const { deployedChequeBank, payer, payee1, payee2 } = await loadFixture(
         chequeBankFixture
       )
@@ -520,7 +545,7 @@ describe('Cheque Bank contract', () => {
 
       await expect(
         deployedChequeBank.connect(payer).revoke(chequeId)
-      ).to.revertedWith('Cheque should not be signed over')
+      ).to.revertedWith('Signed over cheque requires original payee to revoke')
     })
   })
 
